@@ -1,5 +1,4 @@
 import { buttonVariants as heroButtonVariants } from '@heroui/react';
-import { Slot } from '@radix-ui/react-slot';
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
@@ -56,20 +55,30 @@ function Button({
     variant = 'default',
     size = 'default',
     asChild = false,
+    children,
     ...props
 }: React.ComponentProps<'button'> & {
     variant?: ButtonVariant;
     size?: ButtonSize;
     asChild?: boolean;
 }) {
-    const Comp = asChild ? Slot : 'button';
+    const buttonClassName = buttonVariants({ variant, size, className });
+
+    if (asChild && React.isValidElement<{ className?: string }>(children)) {
+        return React.cloneElement(children, {
+            ...props,
+            className: cn(buttonClassName, children.props.className),
+        });
+    }
 
     return (
-        <Comp
+        <button
             data-slot="button"
-            className={buttonVariants({ variant, size, className })}
+            className={buttonClassName}
             {...props}
-        />
+        >
+            {children}
+        </button>
     );
 }
 

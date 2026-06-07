@@ -1,27 +1,17 @@
-import { useFlashToast } from '@/hooks/use-flash-toast';
-import { useAppearance } from '@/hooks/use-appearance';
-import { Toaster as Sonner, type ToasterProps } from 'sonner';
+import { Toast } from "@heroui/react"
 
-function Toaster({ ...props }: ToasterProps) {
-    const { appearance } = useAppearance();
+import { useFlashToast } from "@/hooks/use-flash-toast"
 
-    useFlashToast();
+function Toaster() {
+  useFlashToast()
 
-    return (
-        <Sonner
-            theme={appearance}
-            className="toaster group"
-            position="bottom-right"
-            style={
-                {
-                    '--normal-bg': 'var(--popover)',
-                    '--normal-text': 'var(--popover-foreground)',
-                    '--normal-border': 'var(--border)',
-                } as React.CSSProperties
-            }
-            {...props}
-        />
-    );
+  return (
+    <Toast.Provider
+      placement="bottom end"
+      maxVisibleToasts={4}
+      width={420}
+    />
+  )
 }
 
-export { Toaster };
+export { Toaster }

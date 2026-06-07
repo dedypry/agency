@@ -1,6 +1,6 @@
 import { router } from '@inertiajs/react';
+import { toast } from '@heroui/react';
 import { useEffect } from 'react';
-import { toast } from 'sonner';
 import type { FlashToast } from '@/types/ui';
 
 export function useFlashToast(): void {
@@ -10,6 +10,11 @@ export function useFlashToast(): void {
             const data = flash?.toast as FlashToast | undefined;
 
             if (!data) {
+                return;
+            }
+
+            if (data.type === 'error') {
+                toast.danger(data.message);
                 return;
             }
 

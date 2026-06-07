@@ -1,4 +1,3 @@
-import { Slot } from "@radix-ui/react-slot"
 import { ChevronRight, MoreHorizontal } from "lucide-react"
 import * as React from "react"
 
@@ -34,18 +33,28 @@ function BreadcrumbItem({ className, ...props }: React.ComponentProps<"li">) {
 function BreadcrumbLink({
   asChild,
   className,
+  children,
   ...props
 }: React.ComponentProps<"a"> & {
   asChild?: boolean
 }) {
-  const Comp = asChild ? Slot : "a"
+  const linkClassName = cn("hover:text-foreground transition-colors", className)
+
+  if (asChild && React.isValidElement<{ className?: string }>(children)) {
+    return React.cloneElement(children, {
+      ...props,
+      className: cn(linkClassName, children.props.className),
+    })
+  }
 
   return (
-    <Comp
+    <a
       data-slot="breadcrumb-link"
-      className={cn("hover:text-foreground transition-colors", className)}
+      className={linkClassName}
       {...props}
-    />
+    >
+      {children}
+    </a>
   )
 }
 
