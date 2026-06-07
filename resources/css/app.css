@@ -1,0 +1,91 @@
+@import 'tailwindcss';
+@import '@heroui/styles';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Migration shim (shadcn -> HeroUI v3).
+ * HeroUI owns the shared semantic tokens (background, foreground, accent,
+ * muted, border, radius). Below we only (re)map the shadcn-exclusive utility
+ * tokens onto HeroUI's semantic variables so any screen not yet migrated keeps
+ * an on-brand HeroUI look. Once migration is complete this block can shrink.
+ */
+@theme {
+    --font-sans:
+        'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+        'Noto Color Emoji';
+
+    --color-card: var(--surface);
+    --color-card-foreground: var(--surface-foreground);
+
+    --color-popover: var(--overlay);
+    --color-popover-foreground: var(--overlay-foreground);
+
+    --color-primary: var(--accent);
+    --color-primary-foreground: var(--accent-foreground);
+
+    --color-secondary: var(--surface-secondary);
+    --color-secondary-foreground: var(--surface-secondary-foreground);
+
+    --color-muted-foreground: var(--muted);
+
+    --color-destructive: var(--danger);
+    --color-destructive-foreground: var(--danger-foreground);
+
+    --color-input: var(--border);
+    --color-ring: var(--focus);
+
+    --color-chart-1: var(--accent);
+    --color-chart-2: var(--success);
+    --color-chart-3: var(--warning);
+    --color-chart-4: var(--danger);
+    --color-chart-5: var(--accent-soft);
+
+    --color-sidebar: var(--surface);
+    --color-sidebar-foreground: var(--surface-foreground);
+    --color-sidebar-primary: var(--accent);
+    --color-sidebar-primary-foreground: var(--accent-foreground);
+    --color-sidebar-accent: var(--surface-secondary);
+    --color-sidebar-accent-foreground: var(--surface-secondary-foreground);
+    --color-sidebar-border: var(--border);
+    --color-sidebar-ring: var(--focus);
+}
+
+@layer base {
+    *,
+    ::after,
+    ::before {
+        border-color: var(--border);
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .print-area,
+    .print-area * {
+        visibility: visible;
+    }
+
+    .print-area {
+        position: absolute;
+        inset: 0;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+}
