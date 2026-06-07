@@ -53,7 +53,7 @@ export default function InvoiceForm({
     agents: Agent[];
     products: Pick<Product, 'id' | 'name' | 'price' | 'unit'>[];
 }) {
-    const { data, setData, post, put, processing, errors } = useForm<{
+    const { data, setData, transform, post, put, processing, errors } = useForm<{
         number: string;
         agent_id: string;
         customer_name: string;
@@ -132,8 +132,7 @@ export default function InvoiceForm({
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        const options = {
-            transform: (payload: typeof data) => ({
+        transform((payload) => ({
                 ...payload,
                 agent_id: payload.agent_id === NONE ? '' : payload.agent_id,
                 items: payload.items.map((item) => ({
@@ -142,11 +141,12 @@ export default function InvoiceForm({
                         item.product_id === NONE ? '' : item.product_id,
                 })),
             }),
-        };
+        );
+
         if (invoice) {
-            put(`/admin/invoices/${invoice.id}`, options);
+            put(`/admin/invoices/${invoice.id}`);
         } else {
-            post('/admin/invoices', options);
+            post('/admin/invoices');
         }
     };
 

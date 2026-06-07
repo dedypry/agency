@@ -38,7 +38,7 @@ export default function ProductForm({
     categories: Category[];
     agents: Agent[];
 }) {
-    const { data, setData, post, processing, errors } = useForm<{
+    const { data, setData, transform, post, processing, errors } = useForm<{
         category_id: string;
         agent_id: string;
         name: string;
@@ -89,14 +89,13 @@ export default function ProductForm({
         const url = product
             ? `/admin/products/${product.id}`
             : '/admin/products';
-        post(url, {
-            forceFormData: true,
-            // Normalize the optional agent select before sending.
-            transform: (payload) => ({
+        // Normalize the optional agent select before sending.
+        transform((payload) => ({
                 ...payload,
                 agent_id: payload.agent_id === NONE ? '' : payload.agent_id,
             }),
-        });
+        );
+        post(url, { forceFormData: true });
     };
 
     const toggleRemoveGalleryImage = (imageId: number) => {
